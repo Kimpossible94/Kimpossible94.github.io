@@ -35,12 +35,46 @@
         <span class="nav__sub-title">Coding Test</span>
             <ul>
                 {% for category in site.categories %}
+                    {% if category[0] == "Cote" %}
+                        <li><a href="/categories/cote" class="">코딩테스트 문제 ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% for category in site.categories %}
                     {% if category[0] == "Algorithm" %}
-                        <li><a href="/categories/algorithm" class="">알고리즘 구현 (with C++) ({{category[1].size}})</a></li>
+                        <li><a href="/categories/algorithm" class="">알고리즘 ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% for category in site.categories %}
+                    {% if category[0] == "Structure" %}
+                        <li><a href="/categories/structure" class="">자료구조 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
       </li>
+      <li>
+        <span class="nav__sub-title">DataBase</span>    
+        <ul>
+            {% for category in site.categories %}
+                {% if category[0] == "MySQL" %}
+                    <li class="sub-category"><a href="/categories/Java">MySQL ({{category[1].size}})</a></li>
+                {% endif %}
+            {% endfor %}
+            {% for category in site.categories %}
+                {% if category[0] == "Oracle" %}
+                    <li class="sub-category"><a href="/categories/Java">Oracle ({{category[1].size}})</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+      </li>
+      <li>
+        <span class="nav__sub-title">ETC</span>    
+        <ul>
+            {% for category in site.categories %}
+                {% if category[0] == "Git" %}
+                    <li class="sub-category"><a href="/categories/Java">Git ({{category[1].size}})</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
       </li>
   </ul>
 </nav>
