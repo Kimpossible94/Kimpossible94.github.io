@@ -1,5 +1,5 @@
 ---
-title : "[Algorithm] 점근 표기법 (asymptotic notation) - 작성중"
+title : "[Algorithm] 점근 표기법 (asymptotic notation)"
 excerpt : "접근 표기법에 대해 알아보자 !"
 categories : 
     - Algorithm

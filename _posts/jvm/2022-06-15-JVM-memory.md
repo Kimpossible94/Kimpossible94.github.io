@@ -1,5 +1,5 @@
 ---
-title : "[JVM] Runtime Data Area"
+title : "[JVM] Runtime Data Area - 작성중"
 excerpt : "JVM의 Runtime Data Area"
 categories : 
     - JVM
