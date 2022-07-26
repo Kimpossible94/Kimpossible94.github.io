@@ -1,5 +1,5 @@
 ---
-title : "[JVM] Runtime Data Area - 작성중"
+title : "[JVM] Runtime Data Area"
 excerpt : "JVM의 Runtime Data Area"
 categories : 
     - JVM
@@ -8,7 +8,7 @@ tags :
 toc : true
 toc_sticky : true
 date : 2022-06-14
-last_modified_at: 2022-07-26
+last_modified_at: 2022-07-27
 published: true
 ---
 
@@ -112,37 +112,63 @@ Heap Area은 메서드 안에서 사용되는 객체들을 위한 영역으로 *
 따라서, Heap 에서는 참조되지 않는 인스턴스와 배열에 대한 정보 또한 있을 수 있기 때문에 GC 의 주 대상이 된다.  
   
 <details>
-<summary style="font-weight: bold">Hotspot JVM 대한 설명</summary>
+<summary style="font-weight: bold">Hotspot JVM Heap에 대한 설명</summary>
 <div markdown="1">       
 
 ### Hotspot JVM
-Hotspot JVM은 미국의 Longview Technologies LLC라는 회사에서 1999년에 처음 발표된 JVM이다.  
-이후 이 회사는 같은 해 SUN에 의해 인수되어 1.3버전부터 SUN의 기본적인 JVM이 되었다.  
-Hotspot JVM은 현재 가장 일반적인 JVM 중의 하나로 Windows, Linux, Solaris는 물론 Mac OS와 기타 UJnix OS에도 탑재가 가능하다.  
-HP Unix에서도 Hotspot JVM을 제공하고 있고, 심지어 Oracle을 설치할 때 기본적으로 설치되어 구동되는 JVM 조차 Hotspot JVM이다.  
-따라서 Sun, Oracle, HP, Windows, Linux, MacOS에서 제공하는 JVM은 Hotspot JVM으로 명명하고 IBM에서 제공하는 JVM은 IBM JVM이라 부르기도 한다.  
+Hotspot JVM은 미국의 Longview Technologies LLC라는 회사에서 1999년에 처음 발표된 JVM이다. 이후 이 회사는 같은 해 SUN에 의해 인수되어 1.3버전부터 SUN의 기본적인 JVM이 되었다. 
+Hotspot JVM은 현재 가장 일반적인 JVM 중의 하나로 Windows, Linux, Solaris는 물론 Mac OS와 기타 UJnix OS에도 탑재가 가능하다. HP Unix에서도 Hotspot JVM을 제공하고 있고, 심지어 Oracle을 설치할 때 기본적으로 설치되어 구동되는 JVM 조차 Hotspot JVM이다. 따라서 Sun, Oracle, HP, Windows, Linux, MacOS에서 제공하는 JVM은 Hotspot JVM으로 명명하고 IBM에서 제공하는 JVM은 IBM JVM이라 부르기도 한다.  
 
 ### Hotspot JVM의 Heap 구조
-Hotspot JVM의 Heap은 크게 Young Generation과 Old Generation으로 나누어져 있다.  
+Hotspot JVM의 Heap은 크게 <span class="h-text-p">Young Generation</span>과 <span class="h-text-p">Old Generation</span>으로 나누어져 있다.  
   
 #### Young Generation
-Young Generation은 다시 Survivor 영역과 Eden 영역으로 나뉜다.  
-Eden영역은 Object가 Heap에 최초로 할당되는 장소이며, Eden영역이 꽉 차게 되면 Object의 참조 여부를 따져 참조가 되어있는 Object라면 Survivor 영역으로 넘기고  
-참조가 되어있지 않은 Garbage Object라면 그냥 남겨 놓는다.  
-참조되어있는 모든 Object가 Survivor영역으로 넘어가면 Eden영역을 모두 청소한다.  
+Young Generation은 다시 <span class="h-text-p">Survivor 영역</span>과 <span class="h-text-p">Eden 영역</span>으로 나뉜다.  
+
+**Eden영역은 Object가 Heap에 최초로 할당되는 장소**이며, Eden영역이 꽉 차게 되면 Object의 참조 여부를 따져 참조가 되어있는 Object라면 Survivor 영역으로 넘기고 참조가 되어있지 않은 Garbage Object라면 그냥 남겨 놓는다.  
+참조되어있는 모든 Object가 Survivor영역으로 넘어가면 **Eden영역을 모두 청소한다.**  
+*Young Generation에서 GC가 동작하는 것을 <span class="h-text-y">Minor GC</span>라고 한다.*
+  
+**Survivor 영역은 Eden 영역에서 넘어온 Object들이 머무르는 장소**이다.  
+Survivor 영역은 두 개의 영역(Survivor1, Survivor2)으로 이루어져 있다.  
+Survivor 영역도 마찬가지로 꽉 차게 되면**Minor GC**가 작동한다. 예를 들어 Survivor1이 가득차서 GC가 작동하면 Survivor2로 이동하게된다. 이렇게 살아남아 다른 **Survivor 영역으로가면 Object들의 Age가 올라간다.**  
+(따라서 Survovir의 영역중 한 곳은 반드시 비어있는 상태이다.)  
+  
+아래의 그림으로 설명을 확인해보자.
+  
+<p style="border: solid black 1px" align="center"><img src="/assets/images/JVM/runtime-data/minor_gc.gif"></p>  
+
+#### Old Generation
+Young Generation에서 오래 살아남아 일정 Age이상이 된 Object는 **Promotion**이 발생해 Old Generation 영역으로 이동한다.  
+Old Generation 영역이 채워지다가 가득차게 되면 Young Generation 에서 처럼 GC가 동작하는데 여기서 동작하는 GC는 Major GC라고 한다.    
   
 
-<p style="border: solid black 1px" align="center"><img src="/assets/images/JVM/runtime-data/permgen_java7.png"></p>  
-<p style="border: solid black 1px" align="center"><img src="/assets/images/JVM/runtime-data/permgen_java8.png"></p>  
-Java8 버전 이전에서는 Method Area는 <span class="h-text-p">PermGen(Permanent Generation Space)</span>에 할당되었다.  
-Java8 버전 이후에는 PermGen이 완전히 제거되고 Method Area는 <span class="h-text-p">MetaSpace</span>에 할당된다.  
-  
-PermGen은 OS, JVM 버전마다 각기 다른 default 값을 가지고 있었고, 대부분 작게 할당되어 있었다.  
-그래서 클래스 로딩을 많이 하게 되면 PermGen이 부족해 에러가 발생했다.  
-MetaSpace는 Class의 Metadata를 Native 메모리에 저장하고 부족할 경우 자동으로 늘려준다.  
+[GC에 대한 자세한 내용](#)
 
 </div>
 </details>  
+  
+  
+<div class='next-line'></div>  
+<div class='next-line'></div>  
 
+<details>
+<summary style="font-weight: bold">참고한 내용의 출처</summary>
+<div markdown="1">       
 
+<https://tecoble.techcourse.co.kr/post/2021-08-09-jvm-memory/>
+<https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.6>
+<https://stackoverflow.com/questions/17795597/method-area-of-java-and-stack-area>
+<https://mia-dahae.tistory.com/101>
+<https://stackoverflow.com/questions/17474246/do-java-classes-metadata-go-on-the-heap>
+<https://blog.voidmainvoid.net/315>
+<https://smjeon.dev/etc/jvm-gc/>
+<https://12bme.tistory.com/382>
+<https://alvinalexander.com/scala/fp-book/recursion-jvm-stacks-stack-frames/>
+<http://www.herongyang.com/JVM/Stack-Overflow-What-Is-JVM-Stack.html>
+<https://ko.wikipedia.org/wiki/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8_%EC%B9%B4%EC%9A%B4%ED%84%B0>
+<https://stackoverflow.com/questions/40666484/what-is-meant-by-each-jvm-thread-has-its-own-program-counter>
+
+</div>
+</details>  
 
