@@ -8,7 +8,7 @@ tags :
 toc : true
 toc_sticky : true
 date : 2022-06-14
-last_modified_at: 2022-07-27
+last_modified_at: 2022-07-31
 published: true
 ---
 
@@ -143,7 +143,7 @@ Young Generation에서 오래 살아남아 일정 Age이상이 된 Object는 **P
 Old Generation 영역이 채워지다가 가득차게 되면 Young Generation 에서 처럼 GC가 동작하는데 여기서 동작하는 GC는 Major GC라고 한다.    
   
 
-[GC에 대한 자세한 내용](#)
+[GC에 대한 자세한 내용](../JVM-gc)
 
 </div>
 </details>  
