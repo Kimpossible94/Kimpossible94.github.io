@@ -1,5 +1,5 @@
 ---
-title : "[JVM] Class Loader - 작성중"
+title : "[JVM] Class Loader"
 excerpt : "JVM의 Class Loader에 대해 알아보자."
 categories : 
     - JVM
