@@ -77,14 +77,11 @@
         </ul>
       </li>
       <li>
-        <span class="nav__sub-title">ETC</span>
-        <ul>
-            {% for category in site.categories %}
-                {% if category[0] == "Git" %}
-                    <li class="sub-category"><a href="/categories/Java">Git ({{category[1].size}})</a></li>
-                {% endif %}
-            {% endfor %}
-        </ul>
+        {% for category in site.categories %}
+            {% if category[0] == "ETC" %}
+                <a class="nav__sub-title" href="/categories/ETC">ETC ({{category[1].size}})</a>
+            {% endif %}
+        {% endfor %}
       </li>
   </ul>
 </nav>
